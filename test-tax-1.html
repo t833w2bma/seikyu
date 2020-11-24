@@ -25,47 +25,46 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
   
-  // 要素をコピー
-  $('#copy').click(function(){
+   // 要素をコピー
+   $('#copy').click(function(){
     var textBox = $('form .km').prop('outerHTML');
     $('#ff').before(textBox);
   });
 
 
   $('#taxID').change(function(){
+  // 税収のchangeでイベントを発火させる  
     var total = 0;
-        //全部のtextBoxの値を取得
+
+    //全部のtextBoxの値をループして取得
       $('.km').each(function(i,e){
-        if( $(e).val() != "" )
-          total += parseInt($(e).val()) ; //文字列→数値にキャスト
+        //キャストして加算代入
+        total += parseInt( $(e).val()); 
       });
 
-      switch ($(this).val()) {
-        case "0": //内税 
-          //小数発生時には消費税切り捨て､小計は合計から引き算し一致させる
-          var tax = Math.floor( total / 11 );
-          var shoke = total - tax 
-          $('#taxTanka').val(tax);
-          $('#shoke').val(shoke);
-          $('#goke').val(total);
-          break;
-          
-          case "1": //源泉徴収差引
-          var gtax = Math.floor(total * 0.1);
-          $('#taxTanka').val(gtax);
-          $('#shoke').val(total);
-          $('#goke').val(total - gtax);
-          break;
+  //選択した税種によって分岐
+  switch($('#taxID').val()){
+   case "0": //内税なら
+      var taxTanka = Math.floor(total / 11); //税額
+      $('#taxTanka').val(taxTanka)  // 税額フィールドに値を埋め込む
+      $('#shoke').val(total - taxTanka) //税抜フィールドに値を埋め込む
+      $('#goke').val(total)  //合計フィールドに値を埋め込む
+   break;
 
-        case "2": //消費税
-        var tax = Math.floor(total * 0.1);
-          $('#taxTanka').val(tax);
-          $('#shoke').val(total);
-          $('#goke').val(total + tax);
-          break;
-      }  
-  });
+   case "1": //源泉なら(一律でいい)
+     var taxTanka = Math.floor(total * 0.1021); //税額
+      $('#taxTanka').val(taxTanka)  // 税額フィールドに値を埋め込む
+      $('#shoke').val(total ) //税抜フィールドに値を埋め込む
+      $('#goke').val(total - taxTanka)  //合計フィールドに値を埋め込む
+   break;
+
+   case "2": //外税なら
+     var taxTanka = Math.floor(total * 0.1); //税額
+      $('#taxTanka').val(taxTanka)  // 税額フィールドに値を埋め込む
+      $('#shoke').val(total ) //税抜フィールドに値を埋め込む
+      $('#goke').val(total + taxTanka)  //合計フィールドに値を埋め込む
+   break; 
+  }
+});  
 </script>
-g / 1.1 / 10 = tax 
-g / 11 = tax
 
