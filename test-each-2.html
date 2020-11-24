@@ -1,0 +1,32 @@
+<input class="km" type="text" value="">
+<input class="km" type="text" value="">
+<input class="km" type="text" value="">
+<input class="km" type="text" value="">
+<input class="km" type="text" value="">
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script>
+  // 要素をループしてコンソールに一つずつ出してください
+ var kamoks = []; 
+  $('.km').change(function(){
+    //今入れた値の取得
+    var imaireta = $(this).val(); 
+
+    // ここで比較する
+    if( kamoks.includes(imaireta) ) {
+      alert('重複してます!!');
+      $(this).val('');
+    }
+    
+    //全部のtextBoxの値を取得
+    kamoks = []; 
+    $('.km').each(function(i,e){
+      //配列作成
+      if( $(e).val() != "" )
+      kamoks.push($(e).val());
+    });
+
+    console.log(kamoks);
+  });
+</script>

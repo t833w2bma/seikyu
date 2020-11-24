@@ -1,0 +1,32 @@
+<link rel="stylesheet" href="../style.css?v=1">
+
+<input class="km" type="text" value="a">
+<input class="km" type="text" value="b">
+<input class="km" type="text" value="c">
+<input class="km" type="text" value="d">
+<input class="km" type="text" value="e">
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script>
+  // 重複2回でアラート
+  $('.km').change(function(){
+    //今入れた値の取得
+    var imaireta = $(this).val(); 
+    var count = 0;
+      console.log( imaireta );
+    //全部のtextBoxの値を取得
+      $('.km').each(function(i,e){
+        // ここで比較する
+        console.log( count + $(e).val() );
+        if( imaireta == $(e).val() ){
+          // 1 なら自分と比較
+          count++;
+          if(count > 1 ) {
+            alert( $(e).val() + ' :重複してる');
+            $(this).val('');
+          }
+        }
+      });
+  });
+</script>

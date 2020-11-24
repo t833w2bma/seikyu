@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>請求書発行管理</title>
+  <link rel="stylesheet" href="../style.css?v=1">
+</head>
+
+<body>
+
+  <div class="container">
+
+    <header>
+      <h1 class="title"> 請求書<small>[見本]</small></h1>
+    </header>
+
+
+    <form action="confirm.php" method="post">
+
+      <div class="seikyu-data">
+        <select name="tkID" id="tkID" required>
+          <option value="">宛先社名</option>
+          <option value="1"> 株式会社どこか </option>
+          <option value="2"> ジブン </option>
+          <option value="3"> だれか </option>
+        </select>
+
+        <label class="label _date">請求日</label>
+        <input class="input" type="date" name="date" required>
+      </div>
+
+      <div class="own-data">
+        <label class="ownid">請求者ID</label>
+        <select name="ownid" id="ownid" class="ownid">
+          <option value=""> </option>
+          <option> 1</option>
+          <option> 2</option>
+          <option> 3</option>
+        </select>
+
+        <input class="input" type="text" name="owZip" placeholder="請求者 〒">
+
+        <input class="input" type="text" name="owAddr" placeholder="請求者住所">
+
+        <input class="input" type="text" name="owName" placeholder="請求者名前">
+      </div>
+
+      <div class="field">
+        <div class="reject-print">
+          <button class="button addRow" id="addRow"> 1行増やす </button>
+        </div>
+
+      <!-- 詳細テーブル -->
+        <div class="column">
+          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+            <colgroup span="1" class="col-1">
+            <colgroup span="2" class="col-23">
+            <colgroup span="3" class="col-456">
+
+            <thead>
+              <tr>                  <th>科目名</th>
+                <th>数量</th>
+                <th>単位</th>
+                <th>単価</th>
+                <th>金額</th>
+                <th>備考</th>
+              </tr>
+            </thead>
+
+            <tbody id="orign">
+              <!-- 増える行 -->
+              <tr>
+                <td>
+                    <select name="kmID[]" class="kmIDcls">
+                      <option value="">--科目名選択--</option>
+                      <option value="5"> サイト保守 </option>
+                      <option value="14"> サポート料金 </option>
+                    </select>
+                </td>
+                <td><input class="input kmSuryo" name="kmSuryo[]" type="text"></td>
+                <td><input class="input kmTani" name="kmTani[]" type="text"></td>
+                <td><input class="input kmTanka" name="kmTanka[]" type="text" placeholder="単価"></td>
+                <td><input class="input shokei" type="text" value="" name="shokei[]" readonly=""></td>
+                <td><textarea class="textarea kmBiko" name="kmBiko[]" rows="1"></textarea></td>
+              </tr>
+              <!-- 増える行ここまで -->
+
+
+              <!-- TAX -->
+              <tr>
+                <td>
+                    <select name="kmID[]" id="taxID">
+                      <option value="">--税種選択--</option>
+                      <option value="0"> 内税 </option>
+                      <option value="1"> 源泉徴収差引 </option>
+                      <option value="2"> 消費税 </option>
+                    </select>
+                </td>
+                <td><input class="input" name="kmSuryo[]" type="text" id="taxSuryo"></td>
+                <td><input class="input" name="kmTani[]" type="text" id="taxTani"></td>
+                <td><input class="input" name="kmTanka[]" type="text" id="taxTanka" placeholder="税"></td>
+                <td><input class="input" name="taxNum" type="text" id="taxNum" readonly=""></td>
+                <td><textarea class="textarea" name="kmBiko[]" rows="1"></textarea></td>
+              </tr><!-- TAX -->
+
+            </tbody>
+          </table>
+
+        </div><!--colmn-->
+
+        <div class="row"> 
+          <div class="col-6"><textarea class="textarea" name="owBank" rows="3" required></textarea></div>
+          <div class="col-6 goke">
+            <label class="label">合計</label>
+            <input class="input" type="text" id="goke" name="goke">
+          </div>
+
+        </div>
+        <button type="submit" class="button is-info" id="addRow"> 確認 </button>
+      </div><!--field-->
+
+    </form>
+
+
+  </div> <!--container-->
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="seikyu.js"></script>
+
+</body>
+
+</html>

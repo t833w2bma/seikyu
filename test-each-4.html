@@ -1,0 +1,43 @@
+<button id="copy">copy</button>
+<form>
+  <input class="km" type="text" value="">
+</form>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script>
+  
+  // 要素をコピー
+  $('#copy').click(function(){
+    var textBox = $('form .km').prop('outerHTML');
+    $('form').append(textBox);
+  });
+
+
+  // 要素をループしてコンソールに一つずつ出してください
+  $(document).on("change", ".km", function () {
+    //今入れた値の取得
+    var kamoks = [];
+    //全部のtextBoxの値を取得
+      $('.km').each(function(i,e){
+        if( $(e).val() != "" )
+        kamoks.push($(e).val());
+      });
+
+      // ここでcountする
+    var counter = {};
+      for(k in kamoks){
+        counter[kamoks[k]] = counter[kamoks[k]] ? 2 : 1;
+      }
+      
+      // console.log( counter );
+      for( val in counter){
+        if(counter[val]== 2){
+          alert('重複してます!!');
+            $(this).val('');
+            return;
+        }
+      }
+  });
+</script>

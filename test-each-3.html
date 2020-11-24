@@ -1,0 +1,37 @@
+<button id="copy">copy</button>
+<form>
+  <input class="km" type="text" value="">
+</form>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script>
+
+
+  // 要素をループしてコンソールに一つずつ出してください
+  $('#copy').click(function(){
+    var textBox = $('form .km').prop('outerHTML');
+    $('form').append(textBox);
+  });
+
+
+
+  // $('.km').change( function(e){
+  $(document).on("change", ".km", function () {
+    // 要素が何番目か取得
+    var n = $(this).index();
+    console.log(n);
+    //今入れた値の取得
+    var imaireta = $(this).val(); 
+    //全部のtextBoxの値を取得
+      $('.km').each(function(i,e){
+        // ここで比較する
+        if( imaireta == $(e).val() && i != n ) { 
+          alert('重複してます!!');
+          $(this).val('');
+        }
+      });
+  });
+
+</script>
