@@ -14,21 +14,7 @@ var tkOwn = {
 };
 
 // 税種の配列
-var taxs = {
-<?php 
-     $sql=$pdo->prepare('select * from tax ');
-     $sql->execute();
-     // テーブルの行を回す
-       foreach ($sql as $row) {
-         // 0列目は値に､1列目は表示用にする
-         echo "$row[0]:[ '$row[1]','$row[2]','$row[3]' ],\n";
-          //確認ようの配列
-          $taxs[$row[0]]= [$row[1],$row[2],$row[3]];
-       }
-       $_SESSION['taxs']=$taxs;
-      
-?>  
-};
+var taxs = {<?= $taxs ?> };
 
 
 //税収選択にDBから取得した行を埋め込む
@@ -39,13 +25,6 @@ var tax_op = '<option value="">--税種選択--</option>';
   }
   $('#taxID').html( tax_op );
 
- // 税種のchangeで数と単位に値を埋め込む 
-  $('#taxID').change(function () {
-    var taxID = $(this).val(); // 選んだ1とか2
-      $('#taxSuryo').val(taxs[taxID][1]); // 数量
-      $('#taxTani').val(taxs[taxID][2]); // 単位
-
-  });
 
 
 //請求者IDに1､2の選択肢を埋め込む
@@ -134,6 +113,10 @@ $(document).on("change", ".kmSuryo", function () {
   
   // 税種のchangeでイベントを発火させる  
   $('#taxID').change(function(){
+    var taxID = $(this).val(); // 選んだ1とか2
+      $('#taxSuryo').val(taxs[taxID][1]); // 数量
+      $('#taxTani').val(taxs[taxID][2]); // 単位
+
     var total = 0;
 
     //全部のshokeiの値をループして取得
@@ -143,7 +126,7 @@ $(document).on("change", ".kmSuryo", function () {
       });
 
   //選択した税種によって分岐
-    switch($('#taxID').val()){
+    switch( taxID ){
      
       case "1": 
         //内税なら小計をいちいち税抜にしてみる

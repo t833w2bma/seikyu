@@ -28,7 +28,7 @@ session_start();
 // 同じブラウザで並行処理すると上書きされるので別の変数に代入する
 $post = $_SESSION['post'];
 
-$seikyu = ['tkID','taxID','ownid','date'];
+$seikyu = ['tkID','ownid','date'];
 $uchiwake = ["kmID",'kmSuryo','kmTani','kmTanka','kmBiko'	];
 $seikyu_val = '';
 $uchiwake_val = '';
@@ -43,10 +43,9 @@ require_once 'connect.php';
     $pdo->beginTransaction(); // 4.トランザクション開始の宣言
     // 請求テーブルに入る方
     $q = 1;
-    $sql = 'INSERT INTO seikyu( tk_id, tax_id, ow_id ,seikyubi) VALUES(?,?,?,?)';
+    $sql = 'INSERT INTO seikyu( tk_id, ow_id ,seikyubi) VALUES(?,?,?)';
     $sth = $pdo-> prepare($sql);
     $sth -> bindValue($q++, $post['tkID'], PDO::PARAM_INT);
-    $sth -> bindValue($q++, $post['taxID'], PDO::PARAM_INT);
     $sth -> bindValue($q++, $post['ownid'], PDO::PARAM_INT);
     $sth -> bindValue($q++, $post['date'], PDO::PARAM_STR);
     $sth -> execute(); // SQL実行
@@ -76,5 +75,7 @@ require_once 'connect.php';
      $pdo->rollBack(); 
   }
 
-  if($success) include_once 'seikyu-pdf.php';
-  else "<h2>何かしらエラーらしいです</h2>";
+  if($success){
+    header('Location: seikyu-pdf.php'); exit;
+   }else 
+   "<h2>何かしらエラーらしいです</h2>";

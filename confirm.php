@@ -41,9 +41,7 @@ $_SESSION['post']=$post;
   }
 
   $taxs = $_SESSION['taxs'];
-  echo "<tr>
-    <td>{$taxs[$post['taxID']][0]}</td> <td>{$post['taxSuryo']}</td> <td>{$post['taxTani']}</td> <td>{$post['taxTanka']}</td> <td>{$post['taxNum']}</td> <td>{$post['taxBiko']}</td> 
-  </tr> </table>";
+  echo " </table>";
 
   echo "<p> 合計: {$post['goke']} </p>
         <p> 請求者: {$post['owName']} 住所: {$post['owZip']} {$post['owAddr']} 

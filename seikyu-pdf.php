@@ -6,24 +6,16 @@
   require_once 'connect.php';
 
   $skID = $_SESSION['skID'];
-  $sql = 'select tk_mei,seikyubi,ow_mei,seikyubi,ow_zip,ow_jusho,ginko,tax_mei,tax_rc,tani
+  $sql = 'select tk_mei,seikyubi,ow_mei, ow_zip,ow_jusho,ginko
   from seikyu
   left join tokuisaki using(tk_id)
   left join seikyusha using(ow_id)
-  left join tax using(tax_id)
   where sk_id = ?';
   $sth = $pdo-> prepare($sql);
     $sth -> bindValue( 1, $skID, PDO::PARAM_INT);
     $sth -> execute(); 
     $row = $sth->fetchAll(PDO::FETCH_ASSOC)[0];
 
-  $sql = 'select km_mei, suryo, u.tani, u.tanka, biko
-  from uchiwake as u
-  left join kamoku using(km_id)
-  where sk_id = ?';
-  $sth = $pdo-> prepare($sql);
-    $sth -> bindValue( 1, $skID, PDO::PARAM_INT);
-    $sth -> execute(); 
 ?>
 
 <!DOCTYPE html>
@@ -65,10 +57,25 @@
               <th>科目名</th><th>数量</th><th>単位</th><th>単価</th><th>金額</th><th>備考</th>
             </tr>
 <?php
+
+$sql = 'select km_id, km_mei, suryo, u.tani, u.tanka, biko
+  from uchiwake as u
+  left join kamoku using(km_id)
+  where sk_id = ?';
+  $sth = $pdo-> prepare($sql);
+    $sth -> bindValue( 1, $skID, PDO::PARAM_INT);
+    $sth -> execute(); 
+    $value = $sth->fetchAll(PDO::FETCH_ASSOC);
+    krsort($value);
+
   $gokei  = 0;
   $tr = '<tr>';
-  foreach ($sth as $key => $val ) {
-    $shokei = $val['suryo']*$val['tanka'];
+  foreach ($value as $key => $val ) {
+    if($val['km_id'] > 99 )
+      $shokei = $val['suryo']*$val['tanka'];
+    else
+      $shokei = $val['tanka']; //税なら数量を掛けない｣
+
     $tr .= "<td>{$val['km_mei']}</td> 
     <td>{$val['suryo']}</td> 
     <td>{$val['tani']}</td> 
@@ -80,14 +87,6 @@
   }
     echo $tr;
 ?>
-            <tr>
-              <td class="kmName"><?=$row['tax_mei']?></td>
-              <td class="kmSuryo"><?=$row['tax_rc']?></td>
-              <td class="kmTani"><?=$row['tani']?></td>
-              <td class="kmTanka"></td>
-              <td class="shokei"> <?php echo $gokei * $row['tax_rc'] *0.01 ?> </td>
-              <td class="kmBiko"></td>
-            </tr>
           </tbody>
         </table>
       </section>
@@ -96,7 +95,7 @@
         <div class="owBank"><span class="_owBank"><?= str_replace( '\n','<br>',$row['ginko']) ?></span></div>
         <div class="total">
           <div class="gokei">合計</div>
-          <div class="kingak">&yen <?= $gokei * (1 + $row['tax_rc'] *0.01 ) ?></div>
+          <div class="kingak">&yen <?= $gokei ?></div>
         </div>
       </section>
 

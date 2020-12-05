@@ -72,12 +72,7 @@ require_once 'connect.php';
             <colgroup span="3" class="col-456">
 
             <thead>
-              <tr> <th>科目名</th>
-                <th>数量</th>
-                <th>単位</th>
-                <th>単価</th>
-                <th>金額</th>
-                <th>備考</th>
+              <tr> <th>科目名</th><th>数量</th><th>単位</th><th>単価</th><th>金額</th><th>備考</th>
               </tr>
             </thead>
 
@@ -91,15 +86,20 @@ require_once 'connect.php';
   <?php
    //確認画面用に 1 => "サーバー保守" , の配列を作って､SESSIONに保存する
      $kamokus = [] ;
-     $sql=$pdo->prepare('select km_id, km_mei from kamoku ');
+     $taxs = '';
+     $sql=$pdo->prepare('select km_id, km_mei ,km_tanka ,tani from kamoku ');
      $sql->execute();
      // テーブルの行を回す
        foreach ($sql as $row) {
          // 0列目は値に､1列目は表示用にする
-         echo "<option value='$row[0]'>$row[1]</option>";
-         $kamokus[ $row[0] ] = $row[1] ; // 科目の配列を作る
-       }
-    $_SESSION['kamokus'] = $kamokus; //セッション変数に代入
+         if($row['km_id'] > 99 )
+            echo "<option value='$row[0]'>$row[1]</option>";
+         else
+            $taxs .= "$row[0]:[ '$row[1]','$row[2]','$row[3]' ],\n";  
+            $kamokus[ $row[0] ] = $row[1] ; // 科目の配列を作る
+          }
+      $_SESSION['kamokus'] = $kamokus; //セッション変数に代入
+      $_SESSION['taxs']=$taxs;    
   ?>                    
                     </select>
                 </td>
@@ -115,14 +115,14 @@ require_once 'connect.php';
               <!-- TAX -->
               <tr>
                 <td>
-                    <select name="taxID" id="taxID">
+                    <select name="kmID[]" id="taxID">
                     </select>
                 </td>
-                <td><input class="input" name="taxSuryo" type="text" id="taxSuryo"></td>
-                <td><input class="input" name="taxTani" type="text" id="taxTani"></td>
-                <td><input class="input" name="taxTanka" type="text" id="taxTanka" placeholder="税"></td>
-                <td><input class="input" name="taxNum" type="text" id="taxNum" readonly=""></td>
-                <td><textarea class="textarea" name="taxBiko" rows="1"></textarea></td>
+                <td><input class="input" name="kmSuryo[]" type="text" id="taxSuryo"></td>
+                <td><input class="input" name="kmTani[]" type="text" id="taxTani"></td>
+                <td><input class="input" name="kmTanka[]" type="text" id="taxTanka" placeholder="税"></td>
+                <td><input class="input" name="shokei[]" type="text" id="taxNum" readonly=""></td>
+                <td><textarea class="textarea" name="kmBiko[]" rows="1"></textarea></td>
               </tr><!-- TAX -->
 
             </tbody>
