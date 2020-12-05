@@ -1,0 +1,29 @@
+@charset 'utf-8';
+.container{max-width: 1200px;margin: auto;}
+input.input,select,.textarea {
+  padding: 5px 8px;
+  font-size: 16px;
+  font-family: sans-serif;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+.table{ 
+  width: 100%;
+  margin:0 auto;   /*センタリングしなさい*/
+  border-collapse: collapse; /*セル間の隙間をなくして1pxの実線にしなさい*/
+}
+.table tr td:last-of-type{padding-top: 6px; padding-bottom: 0;}
+textarea.kmBiko{min-height: 25px;}
+.col-1{width: 15em;}
+.col-23{width: 5em;}
+.col-456{width: 15em;}
+td .input, td select{width: calc(100% - 22px);}
+td{border: solid 1px #aaa;padding: 3px 5px;}
+.row,.column{margin-top: 30px;margin-bottom: 30px;}
+.row {
+  display: flex;
+  justify-content: space-around;
+}
+[name="owBank"]{width: 70%;}
+.col-6{width: 50%;}
+.col-6.goke{text-align: right;}
